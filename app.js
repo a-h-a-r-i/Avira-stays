@@ -330,6 +330,16 @@ function autoCheckout() {
   co.value = next.toISOString().slice(0, 10);
 }
 
+// Attach checkin listener once DOM is ready — covers all browsers/mobile
+document.addEventListener('DOMContentLoaded', function() {
+  const ci = document.getElementById('checkinDate');
+  if (ci) {
+    ci.addEventListener('change', autoCheckout);
+    ci.addEventListener('input',  autoCheckout);
+    ci.addEventListener('blur',   autoCheckout);
+  }
+});
+
 function updateCaretaker() {
   const prop = document.getElementById('property')?.value;
   const ct   = CARETAKERS[prop];
