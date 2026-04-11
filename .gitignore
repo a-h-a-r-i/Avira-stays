@@ -1,2 +1,2 @@
-# Keep Firebase keys private — copy firebase-config.example.js and fill in your keys
-firebase-config.js
+# firebase-config.js is intentionally included for deployment
+# Do not add sensitive keys here — Firebase security rules protect the data
