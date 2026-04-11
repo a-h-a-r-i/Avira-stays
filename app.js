@@ -8,7 +8,8 @@ function initApp() {
   const today = now.toISOString().slice(0, 10);
   const ci = document.getElementById('checkinDate');
   if (ci && !ci.value) ci.value = today;
-  autoCheckout(); // set checkout = checkin+1 on load
+  attachCheckinListener();
+  autoCheckout();
   updateCaretaker();
 
   // Render immediately from local cache so UI isn't blank
@@ -56,17 +57,13 @@ function showTab(name) {
   if (name === 'bookings')   renderBookings();
   if (name === 'dashboard')  renderDashboard();
   if (name === 'newBooking') {
-    // Use setTimeout to ensure tab is visible before setting values
     setTimeout(() => {
       const today = new Date().toISOString().slice(0, 10);
       const ci = document.getElementById('checkinDate');
       const co = document.getElementById('checkoutDate');
       if (ci && !ci.value) ci.value = today;
-      if (ci && co) {
-        const next = new Date((ci.value || today) + 'T00:00:00');
-        next.setDate(next.getDate() + 1);
-        co.value = next.toISOString().slice(0, 10);
-      }
+      attachCheckinListener();
+      autoCheckout();
       updateCaretaker();
     }, 0);
   }
@@ -320,25 +317,26 @@ function renderUpcoming(bookings, airbnb, today) {
 
 // ── New Booking Form ──────────────────────────────────────────────────────────
 
-// Called on checkin date change — always sets checkout to checkin+1
+// ── Checkout auto +1 ─────────────────────────────────────────────────────────
+// When checkin date is set/changed, checkout = checkin + 1 day automatically.
+// User can still manually change checkout after.
+
 function autoCheckout() {
   const ci = document.getElementById('checkinDate');
   const co = document.getElementById('checkoutDate');
   if (!ci || !co || !ci.value) return;
-  const next = new Date(ci.value + 'T00:00:00');
-  next.setDate(next.getDate() + 1);
-  co.value = next.toISOString().slice(0, 10);
+  const d = new Date(ci.value + 'T00:00:00');
+  d.setDate(d.getDate() + 1);
+  co.value = d.toISOString().slice(0, 10);
 }
 
-// Attach checkin listener once DOM is ready — covers all browsers/mobile
-document.addEventListener('DOMContentLoaded', function() {
+function attachCheckinListener() {
   const ci = document.getElementById('checkinDate');
-  if (ci) {
-    ci.addEventListener('change', autoCheckout);
-    ci.addEventListener('input',  autoCheckout);
-    ci.addEventListener('blur',   autoCheckout);
-  }
-});
+  if (!ci || ci._listenerAttached) return;
+  ci.addEventListener('change', autoCheckout);
+  ci.addEventListener('input',  autoCheckout);
+  ci._listenerAttached = true;
+}
 
 function updateCaretaker() {
   const prop = document.getElementById('property')?.value;
