@@ -11,7 +11,12 @@ function initApp() {
   autoCheckout();
   updateCaretaker();
 
-  // Sync from Firebase first, then render everything
+  // Render immediately from local cache so UI isn't blank
+  renderDashboard();
+  renderBookings();
+  renderCalendar();
+
+  // Then sync from Firebase and re-render with fresh data
   DB.syncFromFirebase().then(() => {
     renderDashboard();
     renderBookings();

@@ -1,17 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Avira Stays Hospitality</title>
-  <link rel="stylesheet" href="style.css?v=16" />
+  <link rel="stylesheet" href="style.css?v=20" />
   <!-- PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Your Firebase config — edit this file with your keys -->
+  <!-- Your Firebase config â€” edit this file with your keys -->
   <script src="firebase-config.js"></script>
 </head>
 <body>
@@ -20,14 +20,14 @@
 <div id="loginScreen" class="screen">
   <div class="login-box">
     <div class="logo-area">
-      <div class="login-logo-icon">🌿</div>
+      <div class="login-logo-icon">ðŸŒ¿</div>
       <h1>AVIRA STAYS</h1>
       <p class="tagline">Hospitality</p>
     </div>
     <input type="text" id="loginUser" placeholder="Username" />
     <div class="pw-wrap">
       <input type="password" id="loginPass" placeholder="Password" />
-      <button type="button" class="pw-eye" onclick="togglePw('loginPass', this)" tabindex="-1">👁</button>
+      <button type="button" class="pw-eye" onclick="togglePw('loginPass', this)" tabindex="-1">ðŸ‘</button>
     </div>
     <button onclick="doLogin()">Login</button>
     <p id="loginError" class="error"></p>
@@ -38,7 +38,7 @@
 <div id="appScreen" class="screen hidden">
   <header>
     <div class="header-left">
-      <span class="header-icon">🌿</span>
+      <span class="header-icon">ðŸŒ¿</span>
       <div class="header-brand">
         <span class="brand-name">AVIRA STAYS</span>
         <span class="brand-sub">HOSPITALITY</span>
@@ -68,7 +68,7 @@
         <p class="page-sub" id="todayLabel"></p>
       </div>
       <div class="dashboard-actions" id="dashboardActions">
-        <button onclick="syncAirbnb()" class="btn-outline-sm">↻ Refresh Airbnb</button>
+        <button onclick="syncAirbnb()" class="btn-outline-sm">â†» Refresh Airbnb</button>
         <button onclick="showTab('newBooking')" class="btn-accent-sm" data-admin>+ Booking</button>
       </div>
     </div>
@@ -82,7 +82,7 @@
   <!-- PROPERTY DETAIL PAGE -->
   <div id="tab-propertyDetail" class="tab-content hidden">
     <div class="prop-detail-header">
-      <button onclick="showTab('dashboard')" class="btn-back">← Back</button>
+      <button onclick="showTab('dashboard')" class="btn-back">â† Back</button>
       <div>
         <h3 class="page-title" id="propDetailName"></h3>
         <p class="page-sub" id="propDetailSub"></p>
@@ -142,11 +142,11 @@
           <input type="number" id="pets" min="0" value="0" />
         </div>
         <div class="form-group">
-          <label>Total Amount (₹)</label>
+          <label>Total Amount (â‚¹)</label>
           <input type="number" id="totalAmount" placeholder="7500" required />
         </div>
         <div class="form-group">
-          <label>Advance Received (₹)</label>
+          <label>Advance Received (â‚¹)</label>
           <input type="number" id="advanceAmount" placeholder="3500" />
         </div>
         <div class="form-group">
@@ -195,15 +195,15 @@
       <h4>Airbnb iCal Sync</h4>
       <div class="ical-inputs">
         <div class="form-group">
-          <label>Avy Abode – Airbnb iCal URL</label>
+          <label>Avy Abode â€“ Airbnb iCal URL</label>
           <input type="url" id="ical_Avy Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <div class="form-group">
-          <label>Ira Abode – Airbnb iCal URL</label>
+          <label>Ira Abode â€“ Airbnb iCal URL</label>
           <input type="url" id="ical_Ira Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <div class="form-group">
-          <label>MangoGreens – Airbnb iCal URL</label>
+          <label>MangoGreens â€“ Airbnb iCal URL</label>
           <input type="url" id="ical_MangoGreens" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <button onclick="saveIcalLinks()" class="btn-primary">Save iCal Links</button>
@@ -233,14 +233,14 @@
           <label>New Password</label>
           <div class="pw-wrap">
             <input type="password" id="newAdminPass" placeholder="New password" />
-            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass', this)" tabindex="-1">👁</button>
+            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass', this)" tabindex="-1">ðŸ‘</button>
           </div>
         </div>
         <div class="form-group">
           <label>Confirm Password</label>
           <div class="pw-wrap">
             <input type="password" id="newAdminPass2" placeholder="Confirm password" />
-            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass2', this)" tabindex="-1">👁</button>
+            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass2', this)" tabindex="-1">ðŸ‘</button>
           </div>
         </div>
       </div>
@@ -257,7 +257,7 @@
 
       <!-- Avy Abode + Ira Abode (Sudhakar) -->
       <div class="ct-cred-block">
-        <div class="ct-cred-label">🏡 Avy Abode &amp; Ira Abode — Sudhakar</div>
+        <div class="ct-cred-label">ðŸ¡ Avy Abode &amp; Ira Abode â€” Sudhakar</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr">
           <div class="form-group">
             <label>Username</label>
@@ -267,7 +267,7 @@
             <label>Password</label>
             <div class="pw-wrap">
               <input type="password" id="ct_sudhakar_pass" placeholder="sudhakar123" />
-              <button type="button" class="pw-eye" onclick="togglePw('ct_sudhakar_pass', this)" tabindex="-1">👁</button>
+              <button type="button" class="pw-eye" onclick="togglePw('ct_sudhakar_pass', this)" tabindex="-1">ðŸ‘</button>
             </div>
           </div>
         </div>
@@ -279,7 +279,7 @@
 
       <!-- MangoGreens (Suman) -->
       <div class="ct-cred-block">
-        <div class="ct-cred-label">🏡 MangoGreens — Suman</div>
+        <div class="ct-cred-label">ðŸ¡ MangoGreens â€” Suman</div>
         <div class="form-grid" style="grid-template-columns:1fr 1fr">
           <div class="form-group">
             <label>Username</label>
@@ -289,7 +289,7 @@
             <label>Password</label>
             <div class="pw-wrap">
               <input type="password" id="ct_mango_pass" placeholder="mango123" />
-              <button type="button" class="pw-eye" onclick="togglePw('ct_mango_pass', this)" tabindex="-1">👁</button>
+              <button type="button" class="pw-eye" onclick="togglePw('ct_mango_pass', this)" tabindex="-1">ðŸ‘</button>
             </div>
           </div>
         </div>
@@ -306,22 +306,23 @@
 <div id="receiptModal" class="modal hidden">
   <div class="modal-content" id="receiptContent"></div>
   <div class="modal-actions no-print">
-    <button onclick="closeReceipt()" class="rcpt-close-btn">✕ Close</button>
-    <button onclick="shareReceipt()" class="rcpt-share-btn">↗ Share Receipt</button>
-    <button onclick="window.print()" class="rcpt-print-btn">🖨 Print / Save as PDF</button>
+    <button onclick="closeReceipt()" class="rcpt-close-btn">âœ• Close</button>
+    <button onclick="shareReceipt()" class="rcpt-share-btn">â†— Share Receipt</button>
+    <button onclick="window.print()" class="rcpt-print-btn">ðŸ–¨ Print / Save as PDF</button>
   </div>
   <div id="shareToast" class="share-toast hidden">Link copied to clipboard!</div>
 </div>
 <div id="modalOverlay" class="modal-overlay hidden" onclick="closeReceipt()"></div>
 
-<script src="db.js?v=10"></script>
-<script src="auth.js?v=12"></script>
-<script src="receipt.js?v=10"></script>
-<script src="calendar.js?v=10"></script>
-<script src="app.js?v=16"></script>
+<script src="db.js?v=20"></script>
+<script src="auth.js?v=20"></script>
+<script src="receipt.js?v=20"></script>
+<script src="calendar.js?v=20"></script>
+<script src="app.js?v=20"></script>
 <script>
   // Initialise Firebase as soon as scripts are loaded
   initFirebase();
 </script>
 </body>
 </html>
+
