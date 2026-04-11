@@ -95,7 +95,7 @@
   <!-- NEW BOOKING -->
   <div id="tab-newBooking" class="tab-content hidden">
     <h3 class="page-title">New Booking</h3>
-    <form id="bookingForm" onsubmit="saveBooking(event)">
+    <form id="bookingForm" onsubmit="return false;">
       <div class="form-grid">
         <div class="form-group">
           <label>Property</label>
@@ -164,7 +164,7 @@
       </div>
       <div class="caretaker-info" id="caretakerInfo"></div>
       <div class="form-actions">
-        <button type="submit" class="btn-primary">Save Booking</button>
+        <button type="button" onclick="saveBooking()" class="btn-primary">Save Booking</button>
         <button type="button" onclick="resetForm()" class="btn-secondary">Clear</button>
       </div>
     </form>

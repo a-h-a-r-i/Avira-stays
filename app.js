@@ -309,31 +309,47 @@ function updateCaretaker() {
   el.innerHTML = `<span>👤 Caretaker: <strong>${ct.name}</strong> &nbsp; ${ct.phone}</span>`;
 }
 
-async function saveBooking(e) {
-  e.preventDefault();
+async function saveBooking() {
   if (!isAdmin()) return;
 
+  // Manual validation
+  const property    = document.getElementById('property').value;
+  const guestName   = document.getElementById('guestName').value.trim();
+  const checkinDate = document.getElementById('checkinDate').value;
+  const checkoutDate= document.getElementById('checkoutDate').value;
+  const totalAmount = document.getElementById('totalAmount').value;
+
+  if (!guestName)    { alert('Please enter guest name.');    return; }
+  if (!checkinDate)  { alert('Please select check-in date.'); return; }
+  if (!checkoutDate) { alert('Please select check-out date.'); return; }
+  if (!totalAmount)  { alert('Please enter total amount.');   return; }
+
   const booking = {
-    property:      document.getElementById('property').value,
-    guestName:     document.getElementById('guestName').value.trim(),
+    property,
+    guestName,
     guestPhone:    document.getElementById('guestPhone').value.trim(),
-    checkinDate:   document.getElementById('checkinDate').value,
+    checkinDate,
     checkinTime:   document.getElementById('checkinTime').value,
-    checkoutDate:  document.getElementById('checkoutDate').value,
+    checkoutDate,
     checkoutTime:  document.getElementById('checkoutTime').value,
-    adults:        parseInt(document.getElementById('adults').value) || 0,
-    kids:          parseInt(document.getElementById('kids').value)   || 0,
-    pets:          parseInt(document.getElementById('pets').value)   || 0,
+    adults:        parseInt(document.getElementById('adults').value)        || 0,
+    kids:          parseInt(document.getElementById('kids').value)          || 0,
+    pets:          parseInt(document.getElementById('pets').value)          || 0,
     totalAmount:   parseFloat(document.getElementById('totalAmount').value) || 0,
     advanceAmount: parseFloat(document.getElementById('advanceAmount').value) || 0,
     bookingSource: document.getElementById('bookingSource').value,
     notes:         document.getElementById('notes').value.trim()
   };
 
+  // Save to DB (Firebase or localStorage)
   const saved = await DB.addBooking(booking);
+
+  // Re-render views with updated local cache
   renderBookings();
   renderDashboard();
   renderCalendar();
+
+  // Reset form then show receipt
   resetForm();
   showReceipt(saved);
 }
