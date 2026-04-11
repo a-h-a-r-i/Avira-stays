@@ -58,7 +58,10 @@ function showTab(name) {
   if (name === 'newBooking') {
     const today = new Date().toISOString().slice(0, 10);
     const ci = document.getElementById('checkinDate');
-    if (ci && !ci.value) { ci.value = today; autoCheckout(); }
+    if (ci && !ci.value) {
+      ci.value = today;
+      autoCheckout();
+    }
   }
 }
 
@@ -310,6 +313,7 @@ function renderUpcoming(bookings, airbnb, today) {
 
 // ── New Booking Form ──────────────────────────────────────────────────────────
 
+// Called on checkin date change — always sets checkout to checkin+1
 function autoCheckout() {
   const ci = document.getElementById('checkinDate');
   const co = document.getElementById('checkoutDate');
