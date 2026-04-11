@@ -56,12 +56,19 @@ function showTab(name) {
   if (name === 'bookings')   renderBookings();
   if (name === 'dashboard')  renderDashboard();
   if (name === 'newBooking') {
-    const today = new Date().toISOString().slice(0, 10);
-    const ci = document.getElementById('checkinDate');
-    if (ci) {
-      if (!ci.value) ci.value = today;
-      autoCheckout(); // always recalculate checkout
-    }
+    // Use setTimeout to ensure tab is visible before setting values
+    setTimeout(() => {
+      const today = new Date().toISOString().slice(0, 10);
+      const ci = document.getElementById('checkinDate');
+      const co = document.getElementById('checkoutDate');
+      if (ci && !ci.value) ci.value = today;
+      if (ci && co) {
+        const next = new Date((ci.value || today) + 'T00:00:00');
+        next.setDate(next.getDate() + 1);
+        co.value = next.toISOString().slice(0, 10);
+      }
+      updateCaretaker();
+    }, 0);
   }
 }
 
@@ -379,10 +386,12 @@ async function saveBooking() {
 function resetForm() {
   document.getElementById('bookingForm').reset();
   const today = new Date().toISOString().slice(0, 10);
+  const next  = new Date(today + 'T00:00:00');
+  next.setDate(next.getDate() + 1);
   document.getElementById('checkinDate').value  = today;
+  document.getElementById('checkoutDate').value = next.toISOString().slice(0, 10);
   document.getElementById('checkinTime').value  = '14:00';
   document.getElementById('checkoutTime').value = '12:00';
-  autoCheckout();
   updateCaretaker();
 }
 
