@@ -242,10 +242,11 @@ function renderPropertyDetail(prop) {
 function deletePropBooking(id, prop) {
   if (!isAdmin()) return;
   if (!confirm('Delete this booking?')) return;
-  DB.deleteBooking(id);
-  renderPropertyDetail(prop);
-  renderDashboard();
-  renderCalendar();
+  DB.deleteBooking(id).then(() => {
+    renderPropertyDetail(prop);
+    renderDashboard();
+    renderCalendar();
+  });
 }
 
 function openNewBookingForProp() {
@@ -308,7 +309,7 @@ function updateCaretaker() {
   el.innerHTML = `<span>👤 Caretaker: <strong>${ct.name}</strong> &nbsp; ${ct.phone}</span>`;
 }
 
-function saveBooking(e) {
+async function saveBooking(e) {
   e.preventDefault();
   if (!isAdmin()) return;
 
@@ -329,12 +330,12 @@ function saveBooking(e) {
     notes:         document.getElementById('notes').value.trim()
   };
 
-  const saved = DB.addBooking(booking);
+  const saved = await DB.addBooking(booking);
   renderBookings();
   renderDashboard();
   renderCalendar();
-  showReceipt(saved);
   resetForm();
+  showReceipt(saved);
 }
 
 function resetForm() {
@@ -404,8 +405,9 @@ function renderBookings() {
 function deleteBooking(id) {
   if (!isAdmin()) return;
   if (!confirm('Delete this booking?')) return;
-  DB.deleteBooking(id);
-  renderBookings();
-  renderDashboard();
-  renderCalendar();
+  DB.deleteBooking(id).then(() => {
+    renderBookings();
+    renderDashboard();
+    renderCalendar();
+  });
 }
