@@ -8,7 +8,7 @@ function initApp() {
   const today = now.toISOString().slice(0, 10);
   const ci = document.getElementById('checkinDate');
   if (ci && !ci.value) ci.value = today;
-  autoCheckout();
+  autoCheckout(); // set checkout = checkin+1 on load
   updateCaretaker();
 
   // Render immediately from local cache so UI isn't blank
@@ -58,9 +58,9 @@ function showTab(name) {
   if (name === 'newBooking') {
     const today = new Date().toISOString().slice(0, 10);
     const ci = document.getElementById('checkinDate');
-    if (ci && !ci.value) {
-      ci.value = today;
-      autoCheckout();
+    if (ci) {
+      if (!ci.value) ci.value = today;
+      autoCheckout(); // always recalculate checkout
     }
   }
 }
