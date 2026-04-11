@@ -45,6 +45,13 @@ function showTab(name) {
   if (name === 'calendar') renderCalendar();
   if (name === 'bookings') renderBookings();
   if (name === 'dashboard') renderDashboard();
+  if (name === 'newBooking') {
+    // Always set checkin to today and checkout to tomorrow when opening form
+    const today = new Date().toISOString().slice(0, 10);
+    const ci = document.getElementById('checkinDate');
+    if (ci && !ci.value) ci.value = today;
+    autoCheckout();
+  }
 }
 
 function toggleMobileNav() {
@@ -298,6 +305,8 @@ function autoCheckout() {
   if (!ci || !co || !ci.value) return;
   const next = new Date(ci.value + 'T00:00:00');
   next.setDate(next.getDate() + 1);
+  co.value = next.toISOString().slice(0, 10);
+}  next.setDate(next.getDate() + 1);
   co.value = next.toISOString().slice(0, 10);
 }
 
