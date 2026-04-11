@@ -38,20 +38,23 @@ function initApp() {
 function showTab(name) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
 
-  const tab = document.getElementById('tab-' + name);
-  const btn = document.getElementById('nav-' + name);
-  if (tab) tab.classList.remove('hidden');
-  if (btn) btn.classList.add('active');
+  const tab    = document.getElementById('tab-'  + name);
+  const btn    = document.getElementById('nav-'  + name);
+  const bnBtn  = document.getElementById('bn-'   + name);
+  if (tab)   tab.classList.remove('hidden');
+  if (btn)   btn.classList.add('active');
+  if (bnBtn) bnBtn.classList.add('active');
 
   // Close mobile nav on tab switch
   document.getElementById('mainNav').classList.remove('nav-open');
   const overlay = document.getElementById('navOverlay');
   if (overlay) overlay.classList.remove('active');
 
-  if (name === 'calendar') renderCalendar();
-  if (name === 'bookings') renderBookings();
-  if (name === 'dashboard') renderDashboard();
+  if (name === 'calendar')   renderCalendar();
+  if (name === 'bookings')   renderBookings();
+  if (name === 'dashboard')  renderDashboard();
   if (name === 'newBooking') {
     const today = new Date().toISOString().slice(0, 10);
     const ci = document.getElementById('checkinDate');

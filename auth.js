@@ -69,7 +69,6 @@ function startApp() {
   document.querySelectorAll('[data-admin]').forEach(el => {
     el.style.display = currentRole === 'admin' ? '' : 'none';
   });
-
   showTab('dashboard');
   initApp();
 }

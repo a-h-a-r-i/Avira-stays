@@ -624,3 +624,70 @@ button:focus { outline: none; }
   .prop-detail-header { gap: 8px; }
   .prop-detail-header .btn-back { padding: 8px 12px; font-size: 13px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTTOM NAV — mobile only
+   ═══════════════════════════════════════════════════════════════ */
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 700px) {
+
+  /* Hide hamburger + desktop nav completely */
+  .hamburger { display: none !important; }
+  #mainNav   { display: none !important; }
+  #navOverlay { display: none !important; }
+  #userLabel  { display: none; }
+  .logout-btn { padding: 5px 10px; font-size: 11px; }
+
+  /* Push page content up so bottom nav doesn't cover it */
+  #appScreen { padding-bottom: 64px; }
+
+  /* Bottom nav bar */
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: var(--header-bg);
+    border-top: 1px solid rgba(255,255,255,.1);
+    z-index: 300;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.25);
+  }
+  .bn-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    color: #a0907a;
+    font-size: 10px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 6px 2px;
+    transition: color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bn-item svg { flex-shrink: 0; }
+  .bn-item.active { color: #fff; }
+  .bn-item.active .bn-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--olive-btn);
+    margin-top: 2px;
+  }
+  .bn-item--booking {
+    color: #fff;
+    background: var(--olive-btn);
+    border-radius: 14px;
+    margin: 8px 4px;
+    flex: 1.2;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .bn-item--booking:hover { background: var(--olive-btn-hover); }
+}
