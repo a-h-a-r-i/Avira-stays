@@ -213,8 +213,6 @@ async function shareReceipt() {
     // Try native share with PDF file (works on Android/iOS)
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
-        title: 'Avira Stays – Booking Receipt',
-        text: 'Your booking confirmation from Avira Stays Hospitality.',
         files: [file]
       });
     } else {
