@@ -600,3 +600,27 @@ button:focus { outline: none; }
 .booking-status-active   { background: #e8f0e0; color: var(--olive); }
 .booking-status-upcoming { background: #e8eef8; color: #4a6aaa; }
 .booking-status-past     { background: #f0f0f0; color: #999; }
+
+/* ── Settings 2-col grid (stacks on mobile) ──────────────────────────────── */
+.settings-2col { grid-template-columns: 1fr 1fr; }
+.btn-save-ct { min-width: 100px; }
+
+/* ── Mobile nav overlay (closes content area) ────────────────────────────── */
+#navOverlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 198;
+}
+#navOverlay.active { display: block; }
+
+@media (max-width: 700px) {
+  .settings-2col { grid-template-columns: 1fr; }
+  .btn-save-ct { width: 100%; }
+  .settings-section { max-width: 100%; }
+  .ct-cred-label { font-size: 14px; font-weight: 600; color: var(--text); }
+  .form-actions .btn-primary,
+  .form-actions .btn-secondary { min-height: 48px; font-size: 15px; }
+  .prop-detail-header { gap: 8px; }
+  .prop-detail-header .btn-back { padding: 8px 12px; font-size: 13px; }
+}

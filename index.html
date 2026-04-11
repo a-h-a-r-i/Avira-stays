@@ -1,33 +1,30 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>Avira Stays Hospitality</title>
-  <link rel="stylesheet" href="style.css?v=20" />
-  <!-- PDF generation -->
+  <link rel="stylesheet" href="style.css?v=21" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Your Firebase config â€” edit this file with your keys -->
   <script src="firebase-config.js"></script>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="loginScreen" class="screen">
   <div class="login-box">
     <div class="logo-area">
-      <div class="login-logo-icon">ðŸŒ¿</div>
+      <div class="login-logo-icon">&#127807;</div>
       <h1>AVIRA STAYS</h1>
       <p class="tagline">Hospitality</p>
     </div>
-    <input type="text" id="loginUser" placeholder="Username" />
+    <input type="text" id="loginUser" placeholder="Username" autocomplete="username" />
     <div class="pw-wrap">
-      <input type="password" id="loginPass" placeholder="Password" />
-      <button type="button" class="pw-eye" onclick="togglePw('loginPass', this)" tabindex="-1">ðŸ‘</button>
+      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" />
+      <button type="button" class="pw-eye" onclick="togglePw('loginPass',this)" tabindex="-1"></button>
     </div>
     <button onclick="doLogin()">Login</button>
     <p id="loginError" class="error"></p>
@@ -38,7 +35,7 @@
 <div id="appScreen" class="screen hidden">
   <header>
     <div class="header-left">
-      <span class="header-icon">ðŸŒ¿</span>
+      <span class="header-icon">&#127807;</span>
       <div class="header-brand">
         <span class="brand-name">AVIRA STAYS</span>
         <span class="brand-sub">HOSPITALITY</span>
@@ -68,7 +65,7 @@
         <p class="page-sub" id="todayLabel"></p>
       </div>
       <div class="dashboard-actions" id="dashboardActions">
-        <button onclick="syncAirbnb()" class="btn-outline-sm">â†» Refresh Airbnb</button>
+        <button onclick="syncAirbnb()" class="btn-outline-sm">&#8635; Refresh Airbnb</button>
         <button onclick="showTab('newBooking')" class="btn-accent-sm" data-admin>+ Booking</button>
       </div>
     </div>
@@ -79,10 +76,10 @@
     </div>
   </div>
 
-  <!-- PROPERTY DETAIL PAGE -->
+  <!-- PROPERTY DETAIL -->
   <div id="tab-propertyDetail" class="tab-content hidden">
     <div class="prop-detail-header">
-      <button onclick="showTab('dashboard')" class="btn-back">â† Back</button>
+      <button onclick="showTab('dashboard')" class="btn-back">&larr; Back</button>
       <div>
         <h3 class="page-title" id="propDetailName"></h3>
         <p class="page-sub" id="propDetailSub"></p>
@@ -142,11 +139,11 @@
           <input type="number" id="pets" min="0" value="0" />
         </div>
         <div class="form-group">
-          <label>Total Amount (â‚¹)</label>
+          <label>Total Amount (&#8377;)</label>
           <input type="number" id="totalAmount" placeholder="7500" required />
         </div>
         <div class="form-group">
-          <label>Advance Received (â‚¹)</label>
+          <label>Advance Received (&#8377;)</label>
           <input type="number" id="advanceAmount" placeholder="3500" />
         </div>
         <div class="form-group">
@@ -170,7 +167,7 @@
     </form>
   </div>
 
-  <!-- BOOKINGS LIST -->
+  <!-- HISTORY -->
   <div id="tab-bookings" class="tab-content hidden">
     <div class="bookings-header">
       <h3 class="page-title">Booking History</h3>
@@ -195,15 +192,15 @@
       <h4>Airbnb iCal Sync</h4>
       <div class="ical-inputs">
         <div class="form-group">
-          <label>Avy Abode â€“ Airbnb iCal URL</label>
+          <label>Avy Abode &ndash; Airbnb iCal URL</label>
           <input type="url" id="ical_Avy Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <div class="form-group">
-          <label>Ira Abode â€“ Airbnb iCal URL</label>
+          <label>Ira Abode &ndash; Airbnb iCal URL</label>
           <input type="url" id="ical_Ira Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <div class="form-group">
-          <label>MangoGreens â€“ Airbnb iCal URL</label>
+          <label>MangoGreens &ndash; Airbnb iCal URL</label>
           <input type="url" id="ical_MangoGreens" placeholder="https://www.airbnb.com/calendar/ical/..." />
         </div>
         <button onclick="saveIcalLinks()" class="btn-primary">Save iCal Links</button>
@@ -223,24 +220,22 @@
   <!-- SETTINGS -->
   <div id="tab-settings" class="tab-content hidden">
     <h3 class="page-title">Settings</h3>
-
-    <!-- Admin password -->
     <div class="settings-section">
       <h4>Change Admin Password</h4>
       <p class="sub">Current login: <strong>admin</strong></p>
-      <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="form-grid settings-2col">
         <div class="form-group">
           <label>New Password</label>
           <div class="pw-wrap">
             <input type="password" id="newAdminPass" placeholder="New password" />
-            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass', this)" tabindex="-1">ðŸ‘</button>
+            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass',this)" tabindex="-1"></button>
           </div>
         </div>
         <div class="form-group">
           <label>Confirm Password</label>
           <div class="pw-wrap">
             <input type="password" id="newAdminPass2" placeholder="Confirm password" />
-            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass2', this)" tabindex="-1">ðŸ‘</button>
+            <button type="button" class="pw-eye" onclick="togglePw('newAdminPass2',this)" tabindex="-1"></button>
           </div>
         </div>
       </div>
@@ -250,51 +245,48 @@
       <p id="adminPassMsg"></p>
     </div>
 
-    <!-- Caretaker logins -->
     <div class="settings-section" style="margin-top:20px">
       <h4>Caretaker Logins</h4>
       <p class="sub">Each caretaker sees only their assigned property on the dashboard.</p>
 
-      <!-- Avy Abode + Ira Abode (Sudhakar) -->
       <div class="ct-cred-block">
-        <div class="ct-cred-label">ðŸ¡ Avy Abode &amp; Ira Abode â€” Sudhakar</div>
-        <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="ct-cred-label">Avy Abode &amp; Ira Abode &mdash; Sudhakar</div>
+        <div class="form-grid settings-2col">
           <div class="form-group">
             <label>Username</label>
-            <input type="text" id="ct_sudhakar_user" placeholder="sudhakar" />
+            <input type="text" id="ct_sudhakar_user" placeholder="sudhakar" autocomplete="off" />
           </div>
           <div class="form-group">
             <label>Password</label>
             <div class="pw-wrap">
-              <input type="password" id="ct_sudhakar_pass" placeholder="sudhakar123" />
-              <button type="button" class="pw-eye" onclick="togglePw('ct_sudhakar_pass', this)" tabindex="-1">ðŸ‘</button>
+              <input type="password" id="ct_sudhakar_pass" placeholder="sudhakar123" autocomplete="new-password" />
+              <button type="button" class="pw-eye" onclick="togglePw('ct_sudhakar_pass',this)" tabindex="-1"></button>
             </div>
           </div>
         </div>
         <div class="form-actions">
-          <button onclick="saveCaretakerCreds('sudhakar')" class="btn-primary">Save</button>
+          <button onclick="saveCaretakerCreds('sudhakar')" class="btn-primary btn-save-ct">Save</button>
         </div>
         <p id="ct_sudhakar_msg"></p>
       </div>
 
-      <!-- MangoGreens (Suman) -->
       <div class="ct-cred-block">
-        <div class="ct-cred-label">ðŸ¡ MangoGreens â€” Suman</div>
-        <div class="form-grid" style="grid-template-columns:1fr 1fr">
+        <div class="ct-cred-label">MangoGreens &mdash; Suman</div>
+        <div class="form-grid settings-2col">
           <div class="form-group">
             <label>Username</label>
-            <input type="text" id="ct_mango_user" placeholder="mango" />
+            <input type="text" id="ct_mango_user" placeholder="mango" autocomplete="off" />
           </div>
           <div class="form-group">
             <label>Password</label>
             <div class="pw-wrap">
-              <input type="password" id="ct_mango_pass" placeholder="mango123" />
-              <button type="button" class="pw-eye" onclick="togglePw('ct_mango_pass', this)" tabindex="-1">ðŸ‘</button>
+              <input type="password" id="ct_mango_pass" placeholder="mango123" autocomplete="new-password" />
+              <button type="button" class="pw-eye" onclick="togglePw('ct_mango_pass',this)" tabindex="-1"></button>
             </div>
           </div>
         </div>
         <div class="form-actions">
-          <button onclick="saveCaretakerCreds('mango')" class="btn-primary">Save</button>
+          <button onclick="saveCaretakerCreds('mango')" class="btn-primary btn-save-ct">Save</button>
         </div>
         <p id="ct_mango_msg"></p>
       </div>
@@ -306,23 +298,21 @@
 <div id="receiptModal" class="modal hidden">
   <div class="modal-content" id="receiptContent"></div>
   <div class="modal-actions no-print">
-    <button onclick="closeReceipt()" class="rcpt-close-btn">âœ• Close</button>
-    <button onclick="shareReceipt()" class="rcpt-share-btn">â†— Share Receipt</button>
-    <button onclick="window.print()" class="rcpt-print-btn">ðŸ–¨ Print / Save as PDF</button>
+    <button onclick="closeReceipt()" class="rcpt-close-btn">&#10005; Close</button>
+    <button onclick="shareReceipt()" class="rcpt-share-btn">&#8599; Share Receipt</button>
+    <button onclick="window.print()" class="rcpt-print-btn">&#128424; Print / Save as PDF</button>
   </div>
-  <div id="shareToast" class="share-toast hidden">Link copied to clipboard!</div>
+  <div id="shareToast" class="share-toast hidden"></div>
 </div>
 <div id="modalOverlay" class="modal-overlay hidden" onclick="closeReceipt()"></div>
 
-<script src="db.js?v=20"></script>
-<script src="auth.js?v=20"></script>
-<script src="receipt.js?v=20"></script>
-<script src="calendar.js?v=20"></script>
-<script src="app.js?v=20"></script>
-<script>
-  // Initialise Firebase as soon as scripts are loaded
-  initFirebase();
-</script>
+<div id="navOverlay" onclick="toggleMobileNav()"></div>
+
+<script src="db.js?v=21"></script>
+<script src="auth.js?v=21"></script>
+<script src="receipt.js?v=21"></script>
+<script src="calendar.js?v=21"></script>
+<script src="app.js?v=21"></script>
+<script>initFirebase();</script>
 </body>
 </html>
-

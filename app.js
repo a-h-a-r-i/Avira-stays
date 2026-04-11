@@ -46,6 +46,8 @@ function showTab(name) {
 
   // Close mobile nav on tab switch
   document.getElementById('mainNav').classList.remove('nav-open');
+  const overlay = document.getElementById('navOverlay');
+  if (overlay) overlay.classList.remove('active');
 
   if (name === 'calendar') renderCalendar();
   if (name === 'bookings') renderBookings();
@@ -58,7 +60,10 @@ function showTab(name) {
 }
 
 function toggleMobileNav() {
-  document.getElementById('mainNav').classList.toggle('nav-open');
+  const nav = document.getElementById('mainNav');
+  const overlay = document.getElementById('navOverlay');
+  nav.classList.toggle('nav-open');
+  if (overlay) overlay.classList.toggle('active', nav.classList.contains('nav-open'));
 }
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
