@@ -51,6 +51,8 @@ function doLogout() {
   currentProperties = [];
   document.getElementById('appScreen').classList.add('hidden');
   document.getElementById('loginScreen').classList.remove('hidden');
+  const bn = document.getElementById('bottomNav');
+  if (bn) bn.classList.add('hidden');
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('loginError').textContent = '';
@@ -59,6 +61,8 @@ function doLogout() {
 function startApp() {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appScreen').classList.remove('hidden');
+  const bn = document.getElementById('bottomNav');
+  if (bn) bn.classList.remove('hidden');
 
   if (currentRole === 'admin') {
     document.getElementById('userLabel').textContent = 'Admin';
