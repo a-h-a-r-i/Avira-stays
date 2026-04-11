@@ -220,11 +220,9 @@ async function shareReceipt() {
     } else {
       // Desktop fallback — download the PDF
       pdf.save(fileName);
-      showShareToast('PDF downloaded — share it from your Downloads folder.');
     }
   } catch (err) {
     console.error('PDF share error:', err);
-    showShareToast('Could not generate PDF. Try Print instead.');
   } finally {
     btn.textContent = original;
     btn.disabled = false;
