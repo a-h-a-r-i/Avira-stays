@@ -682,12 +682,8 @@ button:focus { outline: none; }
   }
   .bn-item--booking {
     color: #fff;
-    background: var(--olive-btn);
-    border-radius: 14px;
-    margin: 8px 4px;
-    flex: 1.2;
     font-size: 13px;
     font-weight: 700;
   }
-  .bn-item--booking:hover { background: var(--olive-btn-hover); }
 }
+
