@@ -251,6 +251,7 @@ function renderPropertyDetail(prop) {
         ${b.notes ? `<div class="pd-notes">📝 ${b.notes}</div>` : ''}
         <div class="pd-actions">
           <button onclick="showReceipt(${JSON.stringify(b).replace(/"/g,'&quot;')})" class="btn-sm">Receipt</button>
+          ${isAdmin() ? `<button onclick="editBooking('${b.id}')" class="btn-sm">Edit</button>` : ''}
           ${isAdmin() ? `<button onclick="deletePropBooking('${b.id}','${prop}')" class="btn-sm btn-danger">Delete</button>` : ''}
         </div>
       </div>`;
@@ -379,7 +380,28 @@ async function saveBooking() {
   };
 
   // Save to DB (Firebase or localStorage)
-  const saved = await DB.addBooking(booking);
+  const editId = document.getElementById('bookingForm').dataset.editId;
+  let saved;
+  if (editId) {
+    // Update existing booking
+    const bookings = DB.getBookings();
+    const idx = bookings.findIndex(b => b.id === editId);
+    if (idx !== -1) {
+      booking.id        = editId;
+      booking.createdAt = bookings[idx].createdAt;
+      bookings[idx]     = booking;
+      localStorage.setItem('avira_bookings', JSON.stringify(bookings));
+      if (window._useFS && window._db) {
+        await window._db.collection('bookings').doc(editId).set(booking);
+      }
+      saved = booking;
+    }
+    delete document.getElementById('bookingForm').dataset.editId;
+    const btn = document.querySelector('#bookingForm .btn-primary');
+    if (btn) btn.textContent = 'Save Booking';
+  } else {
+    saved = await DB.addBooking(booking);
+  }
 
   // Re-render views with updated local cache
   renderBookings();
@@ -393,6 +415,9 @@ async function saveBooking() {
 
 function resetForm() {
   document.getElementById('bookingForm').reset();
+  delete document.getElementById('bookingForm').dataset.editId;
+  const btn = document.querySelector('#bookingForm .btn-primary');
+  if (btn) btn.textContent = 'Save Booking';
   const today = new Date().toISOString().slice(0, 10);
   const next  = new Date(today + 'T00:00:00');
   next.setDate(next.getDate() + 1);
@@ -451,6 +476,7 @@ function renderBookings() {
       ${b.notes ? `<div class="bc-notes">📝 ${b.notes}</div>` : ''}
       <div class="bc-actions">
         <button onclick="showReceipt(${JSON.stringify(b).replace(/"/g,'&quot;')})" class="btn-sm">Receipt</button>
+        ${isAdmin() ? `<button onclick="editBooking('${b.id}')" class="btn-sm">Edit</button>` : ''}
         ${isAdmin() ? `<button onclick="deleteBooking('${b.id}')" class="btn-sm btn-danger">Delete</button>` : ''}
       </div>
     </div>`;
@@ -465,4 +491,37 @@ function deleteBooking(id) {
     renderDashboard();
     renderCalendar();
   });
+}
+
+function editBooking(id) {
+  if (!isAdmin()) return;
+  const b = DB.getBookings().find(b => b.id === id);
+  if (!b) return;
+
+  showTab('newBooking');
+
+  // Store the id being edited so saveBooking knows to update not insert
+  document.getElementById('bookingForm').dataset.editId = id;
+
+  setTimeout(() => {
+    document.getElementById('property').value      = b.property;
+    document.getElementById('guestName').value     = b.guestName || '';
+    document.getElementById('guestPhone').value    = b.guestPhone || '';
+    document.getElementById('checkinDate').value   = b.checkinDate || '';
+    document.getElementById('checkinTime').value   = b.checkinTime || '14:00';
+    document.getElementById('checkoutDate').value  = b.checkoutDate || '';
+    document.getElementById('checkoutTime').value  = b.checkoutTime || '12:00';
+    document.getElementById('adults').value        = b.adults || 0;
+    document.getElementById('kids').value          = b.kids || 0;
+    document.getElementById('pets').value          = b.pets || 0;
+    document.getElementById('totalAmount').value   = b.totalAmount || '';
+    document.getElementById('advanceAmount').value = b.advanceAmount || '';
+    document.getElementById('bookingSource').value = b.bookingSource || 'Direct';
+    document.getElementById('notes').value         = b.notes || '';
+    updateCaretaker();
+
+    // Change button label to indicate editing
+    const btn = document.querySelector('#bookingForm .btn-primary');
+    if (btn) btn.textContent = 'Update Booking';
+  }, 0);
 }

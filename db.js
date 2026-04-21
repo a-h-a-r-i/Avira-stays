@@ -21,6 +21,8 @@ async function initFirebase() {
     firebase.initializeApp(FIREBASE_CONFIG);
     _db    = firebase.firestore();
     _useFS = true;
+    window._db    = _db;
+    window._useFS = _useFS;
     console.log('Firebase connected ✓');
   } catch (e) {
     console.error('Firebase init failed, falling back to localStorage:', e);

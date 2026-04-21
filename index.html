@@ -326,11 +326,12 @@
 
 <!-- RECEIPT MODAL -->
 <div id="receiptModal" class="modal hidden">
+  <button onclick="closeReceipt()" class="rcpt-top-close no-print" aria-label="Close">&#10005;</button>
   <div class="modal-content" id="receiptContent"></div>
   <div class="modal-actions no-print">
-    <button onclick="closeReceipt()" class="rcpt-close-btn">&#10005; Close</button>
-    <button onclick="shareReceipt()" class="rcpt-share-btn">&#8599; Share Receipt</button>
-    <button onclick="window.print()" class="rcpt-print-btn">&#128424; Print / Save as PDF</button>
+    <button onclick="closeReceipt(); showTab('dashboard')" class="rcpt-close-btn">&#8592; Home</button>
+    <button onclick="shareReceipt()" class="rcpt-share-btn">&#8599; Share</button>
+    <button onclick="window.print()" class="rcpt-print-btn">&#128424; Print / PDF</button>
   </div>
   <div id="shareToast" class="share-toast hidden"></div>
 </div>
