@@ -211,3 +211,11 @@ function exportIcal(property) {
   a.download = `avira-${property.replace(/\s+/g, '-').toLowerCase()}.ics`;
   a.click();
 }
+
+function toggleIcal() {
+  const body  = document.getElementById('icalBody');
+  const arrow = document.getElementById('icalArrow');
+  if (!body) return;
+  const open = body.classList.toggle('hidden');
+  arrow.innerHTML = open ? '&#9660;' : '&#9650;';
+}

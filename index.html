@@ -190,30 +190,38 @@
     <h3 class="page-title">Calendar</h3>
     <div class="calendar-grid" id="calendarGrid"></div>
     <div class="ical-section" id="icalSection" data-admin>
-      <h4>Airbnb iCal Sync</h4>
-      <div class="ical-inputs">
-        <div class="form-group">
-          <label>Avy Abode &ndash; Airbnb iCal URL</label>
-          <input type="url" id="ical_Avy Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
+      <button class="ical-toggle" onclick="toggleIcal()">
+        &#8635; Airbnb iCal Sync <span id="icalArrow">&#9660;</span>
+      </button>
+      <div id="icalBody" class="ical-body hidden">
+        <div class="ical-inputs">
+          <div class="form-group">
+            <label>Avy Abode &ndash; Airbnb iCal URL</label>
+            <input type="url" id="ical_Avy Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
+          </div>
+          <div class="form-group">
+            <label>Ira Abode &ndash; Airbnb iCal URL</label>
+            <input type="url" id="ical_Ira Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
+          </div>
+          <div class="form-group">
+            <label>MangoGreens &ndash; Airbnb iCal URL</label>
+            <input type="url" id="ical_MangoGreens" placeholder="https://www.airbnb.com/calendar/ical/..." />
+          </div>
+          <div class="ical-btn-row">
+            <button onclick="saveIcalLinks()" class="btn-primary">Save Links</button>
+            <button onclick="syncAirbnb()" class="btn-secondary">Sync Now</button>
+          </div>
+          <div id="syncStatus"></div>
         </div>
-        <div class="form-group">
-          <label>Ira Abode &ndash; Airbnb iCal URL</label>
-          <input type="url" id="ical_Ira Abode" placeholder="https://www.airbnb.com/calendar/ical/..." />
+        <div class="export-section">
+          <h4>Export iCal (block dates on Airbnb)</h4>
+          <p class="sub">Download and upload to Airbnb to block dates from this app.</p>
+          <div class="ical-btn-row">
+            <button onclick="exportIcal('Avy Abode')" class="btn-secondary">Avy Abode</button>
+            <button onclick="exportIcal('Ira Abode')" class="btn-secondary">Ira Abode</button>
+            <button onclick="exportIcal('MangoGreens')" class="btn-secondary">MangoGreens</button>
+          </div>
         </div>
-        <div class="form-group">
-          <label>MangoGreens &ndash; Airbnb iCal URL</label>
-          <input type="url" id="ical_MangoGreens" placeholder="https://www.airbnb.com/calendar/ical/..." />
-        </div>
-        <button onclick="saveIcalLinks()" class="btn-primary">Save iCal Links</button>
-        <button onclick="syncAirbnb()" class="btn-secondary">Sync Now</button>
-      </div>
-      <div id="syncStatus"></div>
-      <div class="export-section">
-        <h4>Export iCal (to block Airbnb)</h4>
-        <p class="sub">Download and upload to Airbnb to block dates from this app.</p>
-        <button onclick="exportIcal('Avy Abode')" class="btn-secondary">Export Avy Abode</button>
-        <button onclick="exportIcal('Ira Abode')" class="btn-secondary">Export Ira Abode</button>
-        <button onclick="exportIcal('MangoGreens')" class="btn-secondary">Export MangoGreens</button>
       </div>
     </div>
   </div>

@@ -757,3 +757,27 @@ button:focus { outline: none; }
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
+
+/* ── iCal collapsible ─────────────────────────────────────────────────────── */
+.ical-toggle {
+  width: 100%; text-align: left;
+  background: var(--footer-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 13px 16px;
+  font-size: 14px; font-weight: 600;
+  color: var(--text-mid); cursor: pointer;
+  font-family: inherit;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background .2s;
+}
+.ical-toggle:hover { background: var(--card-border); }
+.ical-body {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 18px;
+}
+.ical-btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.ical-section { background: none; border: none; box-shadow: none; padding: 0; }
