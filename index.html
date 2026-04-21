@@ -229,10 +229,39 @@
   <!-- SETTINGS -->
   <div id="tab-settings" class="tab-content hidden">
     <h3 class="page-title">Settings</h3>
-    <div class="settings-section">
-      <h4>Change Admin Password</h4>
-      <p class="sub">Current login: <strong>admin</strong></p>
-      <div class="form-grid settings-2col">
+
+    <!-- Settings menu -->
+    <div id="settingsMenu">
+      <div class="settings-menu-item" onclick="openSettingsPanel('adminPanel')">
+        <div class="smi-left">
+          <div class="smi-icon">&#128274;</div>
+          <div>
+            <div class="smi-title">Admin Password</div>
+            <div class="smi-sub">Change admin login credentials</div>
+          </div>
+        </div>
+        <span class="smi-arrow">&#8250;</span>
+      </div>
+      <div class="settings-menu-item" onclick="openSettingsPanel('caretakerPanel')">
+        <div class="smi-left">
+          <div class="smi-icon">&#128100;</div>
+          <div>
+            <div class="smi-title">Caretaker Logins</div>
+            <div class="smi-sub">Change Sudhakar &amp; Suman credentials</div>
+          </div>
+        </div>
+        <span class="smi-arrow">&#8250;</span>
+      </div>
+    </div>
+
+    <!-- Admin password panel -->
+    <div id="adminPanel" class="settings-panel hidden">
+      <div class="settings-panel-header">
+        <button onclick="closeSettingsPanel('adminPanel')" class="btn-back">&#8592; Back</button>
+        <h4>Change Admin Password</h4>
+      </div>
+      <div class="settings-section">
+        <p class="sub" style="margin-bottom:14px">Current login username: <strong>admin</strong></p>
         <div class="form-group">
           <label>New Password</label>
           <div class="pw-wrap">
@@ -240,64 +269,99 @@
             <button type="button" class="pw-eye" onclick="togglePw('newAdminPass',this)" tabindex="-1"></button>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top:12px">
           <label>Confirm Password</label>
           <div class="pw-wrap">
             <input type="password" id="newAdminPass2" placeholder="Confirm password" />
             <button type="button" class="pw-eye" onclick="togglePw('newAdminPass2',this)" tabindex="-1"></button>
           </div>
         </div>
+        <div class="form-actions" style="margin-top:18px">
+          <button onclick="saveAdminPassword()" class="btn-primary">Update Password</button>
+        </div>
+        <p id="adminPassMsg"></p>
       </div>
-      <div class="form-actions">
-        <button onclick="saveAdminPassword()" class="btn-primary">Update Admin Password</button>
-      </div>
-      <p id="adminPassMsg"></p>
     </div>
 
-    <div class="settings-section" style="margin-top:20px">
-      <h4>Caretaker Logins</h4>
-      <p class="sub">Each caretaker sees only their assigned property on the dashboard.</p>
+    <!-- Caretaker panel -->
+    <div id="caretakerPanel" class="settings-panel hidden">
+      <div class="settings-panel-header">
+        <button onclick="closeSettingsPanel('caretakerPanel')" class="btn-back">&#8592; Back</button>
+        <h4>Caretaker Logins</h4>
+      </div>
 
-      <div class="ct-cred-block">
-        <div class="ct-cred-label">Avy Abode &amp; Ira Abode &mdash; Sudhakar</div>
-        <div class="form-grid settings-2col">
+      <!-- Pick caretaker -->
+      <div id="ctPickMenu">
+        <div class="settings-menu-item" onclick="openCtForm('sudhakar')">
+          <div class="smi-left">
+            <div class="smi-icon">&#127968;</div>
+            <div>
+              <div class="smi-title">Sudhakar</div>
+              <div class="smi-sub">Avy Abode &amp; Ira Abode</div>
+            </div>
+          </div>
+          <span class="smi-arrow">&#8250;</span>
+        </div>
+        <div class="settings-menu-item" onclick="openCtForm('mango')">
+          <div class="smi-left">
+            <div class="smi-icon">&#127968;</div>
+            <div>
+              <div class="smi-title">Suman</div>
+              <div class="smi-sub">MangoGreens</div>
+            </div>
+          </div>
+          <span class="smi-arrow">&#8250;</span>
+        </div>
+      </div>
+
+      <!-- Sudhakar form -->
+      <div id="ctForm_sudhakar" class="ct-form hidden">
+        <div class="settings-panel-header" style="margin-bottom:14px">
+          <button onclick="closeCtForm('sudhakar')" class="btn-back">&#8592; Back</button>
+          <h4>Sudhakar &mdash; Avy &amp; Ira Abode</h4>
+        </div>
+        <div class="settings-section">
           <div class="form-group">
             <label>Username</label>
             <input type="text" id="ct_sudhakar_user" placeholder="sudhakar" autocomplete="off" />
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-top:12px">
             <label>Password</label>
             <div class="pw-wrap">
               <input type="password" id="ct_sudhakar_pass" placeholder="sudhakar123" autocomplete="new-password" />
               <button type="button" class="pw-eye" onclick="togglePw('ct_sudhakar_pass',this)" tabindex="-1"></button>
             </div>
           </div>
+          <div class="form-actions" style="margin-top:18px">
+            <button onclick="saveCaretakerCreds('sudhakar')" class="btn-primary">Save</button>
+          </div>
+          <p id="ct_sudhakar_msg"></p>
         </div>
-        <div class="form-actions">
-          <button onclick="saveCaretakerCreds('sudhakar')" class="btn-primary btn-save-ct">Save</button>
-        </div>
-        <p id="ct_sudhakar_msg"></p>
       </div>
 
-      <div class="ct-cred-block">
-        <div class="ct-cred-label">MangoGreens &mdash; Suman</div>
-        <div class="form-grid settings-2col">
+      <!-- Suman form -->
+      <div id="ctForm_mango" class="ct-form hidden">
+        <div class="settings-panel-header" style="margin-bottom:14px">
+          <button onclick="closeCtForm('mango')" class="btn-back">&#8592; Back</button>
+          <h4>Suman &mdash; MangoGreens</h4>
+        </div>
+        <div class="settings-section">
           <div class="form-group">
             <label>Username</label>
             <input type="text" id="ct_mango_user" placeholder="mango" autocomplete="off" />
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-top:12px">
             <label>Password</label>
             <div class="pw-wrap">
               <input type="password" id="ct_mango_pass" placeholder="mango123" autocomplete="new-password" />
               <button type="button" class="pw-eye" onclick="togglePw('ct_mango_pass',this)" tabindex="-1"></button>
             </div>
           </div>
+          <div class="form-actions" style="margin-top:18px">
+            <button onclick="saveCaretakerCreds('mango')" class="btn-primary">Save</button>
+          </div>
+          <p id="ct_mango_msg"></p>
         </div>
-        <div class="form-actions">
-          <button onclick="saveCaretakerCreds('mango')" class="btn-primary btn-save-ct">Save</button>
-        </div>
-        <p id="ct_mango_msg"></p>
       </div>
     </div>
   </div>

@@ -56,6 +56,21 @@ function showTab(name) {
   if (name === 'calendar')   renderCalendar();
   if (name === 'bookings')   renderBookings();
   if (name === 'dashboard')  renderDashboard();
+  if (name === 'settings') {
+    // Reset to main menu when opening settings
+    const menu = document.getElementById('settingsMenu');
+    const ap   = document.getElementById('adminPanel');
+    const cp   = document.getElementById('caretakerPanel');
+    if (menu) menu.classList.remove('hidden');
+    if (ap)   ap.classList.add('hidden');
+    if (cp)   cp.classList.add('hidden');
+    ['sudhakar','mango'].forEach(k => {
+      const f = document.getElementById('ctForm_' + k);
+      if (f) f.classList.add('hidden');
+    });
+    const pick = document.getElementById('ctPickMenu');
+    if (pick) pick.classList.remove('hidden');
+  }
   if (name === 'newBooking') {
     setTimeout(() => {
       const today = new Date().toISOString().slice(0, 10);
@@ -528,4 +543,27 @@ function editBooking(id) {
     const cancelBtn = document.getElementById('cancelEditBtn');
     if (cancelBtn) cancelBtn.style.display = '';
   }, 0);
+}
+
+// ── Settings panels ───────────────────────────────────────────────────────────
+function openSettingsPanel(id) {
+  document.getElementById('settingsMenu').classList.add('hidden');
+  document.getElementById(id).classList.remove('hidden');
+}
+function closeSettingsPanel(id) {
+  document.getElementById(id).classList.add('hidden');
+  document.getElementById('settingsMenu').classList.remove('hidden');
+}
+function openCtForm(key) {
+  document.getElementById('ctPickMenu').classList.add('hidden');
+  document.getElementById('ctForm_' + key).classList.remove('hidden');
+  // Load saved values
+  const s = DB.getSettings();
+  const def = { sudhakar: 'sudhakar', mango: 'mango' };
+  const uel = document.getElementById('ct_' + key + '_user');
+  if (uel) uel.value = s['ct_' + key + '_user'] || def[key];
+}
+function closeCtForm(key) {
+  document.getElementById('ctForm_' + key).classList.add('hidden');
+  document.getElementById('ctPickMenu').classList.remove('hidden');
 }
