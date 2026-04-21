@@ -418,6 +418,8 @@ function resetForm() {
   delete document.getElementById('bookingForm').dataset.editId;
   const btn = document.querySelector('#bookingForm .btn-primary');
   if (btn) btn.textContent = 'Save Booking';
+  const cancelBtn = document.getElementById('cancelEditBtn');
+  if (cancelBtn) cancelBtn.style.display = 'none';
   const today = new Date().toISOString().slice(0, 10);
   const next  = new Date(today + 'T00:00:00');
   next.setDate(next.getDate() + 1);
@@ -523,5 +525,7 @@ function editBooking(id) {
     // Change button label to indicate editing
     const btn = document.querySelector('#bookingForm .btn-primary');
     if (btn) btn.textContent = 'Update Booking';
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    if (cancelBtn) cancelBtn.style.display = '';
   }, 0);
 }
