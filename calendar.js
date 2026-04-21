@@ -99,7 +99,7 @@ function renderMonth(year, month, dayMap) {
     const dots   = events.map(e =>
       `<span class="cal-dot" style="background:${e.color}" title="${e.label}"></span>`
     ).join('');
-    html += `<div class="cal-day${isToday ? ' today' : ''}${events.length ? ' has-event' : ''}" onclick="calDayClick('${key}')">
+    html += `<div class="cal-day${isToday ? ' today' : ''}${events.length ? ' has-event' : ''}" data-date="${key}" onclick="calDayClick('${key}')">
       <span class="cal-day-num">${d}</span>
       <div class="cal-dots">${dots}</div>
     </div>`;
@@ -220,41 +220,101 @@ function toggleIcal() {
   arrow.innerHTML = open ? '&#9660;' : '&#9650;';
 }
 
-// ── Calendar day click — block/book date ──────────────────────────────────────
+// ── Calendar day click — date range selection ─────────────────────────────────
+let _calSelStart = null;
+let _calSelEnd   = null;
+
 function calDayClick(dateKey) {
-  if (!isAdmin()) return; // caretakers read-only
+  if (!isAdmin()) return;
 
-  // Show a small popup asking which property to book
-  const existing = DB.getBookings().filter(b =>
-    b.checkinDate <= dateKey && b.checkoutDate >= dateKey
-  );
-
-  let msg = `<strong>${formatDate(dateKey)}</strong>`;
-  if (existing.length) {
-    msg += `<br><span style="color:var(--olive);font-size:12px">`;
-    msg += existing.map(b => `${b.property}: ${b.guestName || 'Booked'}`).join('<br>');
-    msg += `</span>`;
+  if (!_calSelStart || (_calSelStart && _calSelEnd)) {
+    // First tap — set check-in
+    _calSelStart = dateKey;
+    _calSelEnd   = null;
+    showCalHint('Check-in: ' + formatDate(dateKey) + ' — now tap check-out date');
+    highlightCalRange();
+    return;
   }
 
-  document.getElementById('calPickDate').innerHTML  = msg;
-  document.getElementById('calPickModal').dataset.date = dateKey;
-  document.getElementById('calPickModal').classList.remove('hidden');
-  document.getElementById('calPickOverlay').classList.remove('hidden');
+  if (_calSelStart && !_calSelEnd) {
+    // Second tap — set check-out
+    if (dateKey <= _calSelStart) {
+      // Tapped same or earlier — restart
+      _calSelStart = dateKey;
+      _calSelEnd   = null;
+      showCalHint('Check-in: ' + formatDate(dateKey) + ' — now tap check-out date');
+      highlightCalRange();
+      return;
+    }
+    _calSelEnd = dateKey;
+    highlightCalRange();
+
+    // Show property picker
+    const existing = DB.getBookings().filter(b =>
+      b.checkinDate <= _calSelEnd && b.checkoutDate >= _calSelStart
+    );
+    let msg = `<strong>${formatDate(_calSelStart)}</strong> &rarr; <strong>${formatDate(_calSelEnd)}</strong>`;
+    if (existing.length) {
+      msg += `<br><span style="color:#c0392b;font-size:12px">&#9888; Overlaps: `;
+      msg += existing.map(b => `${b.property}`).join(', ');
+      msg += `</span>`;
+    }
+    document.getElementById('calPickDate').innerHTML = msg;
+    document.getElementById('calPickModal').dataset.checkin  = _calSelStart;
+    document.getElementById('calPickModal').dataset.checkout = _calSelEnd;
+    document.getElementById('calPickModal').classList.remove('hidden');
+    document.getElementById('calPickOverlay').classList.remove('hidden');
+    clearCalHint();
+  }
+}
+
+function highlightCalRange() {
+  document.querySelectorAll('.cal-day').forEach(el => {
+    el.classList.remove('cal-sel-start','cal-sel-end','cal-sel-range');
+  });
+  if (!_calSelStart) return;
+
+  document.querySelectorAll('.cal-day[data-date]').forEach(el => {
+    const d = el.dataset.date;
+    if (!d) return;
+    if (d === _calSelStart) el.classList.add('cal-sel-start');
+    if (_calSelEnd && d === _calSelEnd) el.classList.add('cal-sel-end');
+    if (_calSelEnd && d > _calSelStart && d < _calSelEnd) el.classList.add('cal-sel-range');
+  });
+}
+
+function showCalHint(msg) {
+  let h = document.getElementById('calHint');
+  if (!h) {
+    h = document.createElement('div');
+    h.id = 'calHint';
+    h.className = 'cal-hint';
+    const grid = document.getElementById('calendarGrid');
+    if (grid) grid.prepend(h);
+  }
+  h.textContent = msg;
+}
+
+function clearCalHint() {
+  const h = document.getElementById('calHint');
+  if (h) h.textContent = '';
 }
 
 function calPickProperty(prop) {
-  const dateKey = document.getElementById('calPickModal').dataset.date;
+  const checkin  = document.getElementById('calPickModal').dataset.checkin;
+  const checkout = document.getElementById('calPickModal').dataset.checkout;
   closeCalPick();
-  // Open new booking form pre-filled
+  _calSelStart = null; _calSelEnd = null;
+  highlightCalRange();
+  clearCalHint();
+
   showTab('newBooking');
   setTimeout(() => {
-    const next = new Date(dateKey + 'T00:00:00');
-    next.setDate(next.getDate() + 1);
-    document.getElementById('property').value      = prop;
-    document.getElementById('checkinDate').value   = dateKey;
-    document.getElementById('checkoutDate').value  = next.toISOString().slice(0, 10);
-    document.getElementById('checkinTime').value   = '14:00';
-    document.getElementById('checkoutTime').value  = '12:00';
+    document.getElementById('property').value     = prop;
+    document.getElementById('checkinDate').value  = checkin;
+    document.getElementById('checkoutDate').value = checkout;
+    document.getElementById('checkinTime').value  = '14:00';
+    document.getElementById('checkoutTime').value = '12:00';
     updateCaretaker();
   }, 0);
 }
@@ -262,4 +322,7 @@ function calPickProperty(prop) {
 function closeCalPick() {
   document.getElementById('calPickModal').classList.add('hidden');
   document.getElementById('calPickOverlay').classList.add('hidden');
+  _calSelStart = null; _calSelEnd = null;
+  highlightCalRange();
+  clearCalHint();
 }

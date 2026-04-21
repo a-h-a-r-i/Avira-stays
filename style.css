@@ -851,3 +851,27 @@ button:focus { outline: none; }
   border: none; border-radius: var(--radius-sm);
   font-size: 14px; cursor: pointer; font-family: inherit;
 }
+
+/* ── Calendar range selection ─────────────────────────────────────────────── */
+.cal-hint {
+  background: #e8f0e0; color: var(--olive-dark);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  font-size: 13px; font-weight: 500; margin-bottom: 12px;
+  border-left: 3px solid var(--olive-btn);
+  min-height: 20px;
+}
+.cal-sel-start {
+  background: var(--olive-btn) !important;
+  border-radius: 6px 0 0 6px;
+}
+.cal-sel-start .cal-day-num { color: #fff !important; font-weight: 700; }
+.cal-sel-end {
+  background: var(--olive-btn) !important;
+  border-radius: 0 6px 6px 0;
+}
+.cal-sel-end .cal-day-num { color: #fff !important; font-weight: 700; }
+.cal-sel-range {
+  background: #d4e8c8 !important;
+  border-radius: 0;
+}
+.cal-sel-range .cal-day-num { color: var(--olive-dark); }
