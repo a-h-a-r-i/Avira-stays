@@ -99,7 +99,7 @@ function renderMonth(year, month, dayMap) {
     const dots   = events.map(e =>
       `<span class="cal-dot" style="background:${e.color}" title="${e.label}"></span>`
     ).join('');
-    html += `<div class="cal-day${isToday ? ' today' : ''}${events.length ? ' has-event' : ''}">
+    html += `<div class="cal-day${isToday ? ' today' : ''}${events.length ? ' has-event' : ''}" onclick="calDayClick('${key}')">
       <span class="cal-day-num">${d}</span>
       <div class="cal-dots">${dots}</div>
     </div>`;
@@ -218,4 +218,48 @@ function toggleIcal() {
   if (!body) return;
   const open = body.classList.toggle('hidden');
   arrow.innerHTML = open ? '&#9660;' : '&#9650;';
+}
+
+// ── Calendar day click — block/book date ──────────────────────────────────────
+function calDayClick(dateKey) {
+  if (!isAdmin()) return; // caretakers read-only
+
+  // Show a small popup asking which property to book
+  const existing = DB.getBookings().filter(b =>
+    b.checkinDate <= dateKey && b.checkoutDate >= dateKey
+  );
+
+  let msg = `<strong>${formatDate(dateKey)}</strong>`;
+  if (existing.length) {
+    msg += `<br><span style="color:var(--olive);font-size:12px">`;
+    msg += existing.map(b => `${b.property}: ${b.guestName || 'Booked'}`).join('<br>');
+    msg += `</span>`;
+  }
+
+  document.getElementById('calPickDate').innerHTML  = msg;
+  document.getElementById('calPickModal').dataset.date = dateKey;
+  document.getElementById('calPickModal').classList.remove('hidden');
+  document.getElementById('calPickOverlay').classList.remove('hidden');
+}
+
+function calPickProperty(prop) {
+  const dateKey = document.getElementById('calPickModal').dataset.date;
+  closeCalPick();
+  // Open new booking form pre-filled
+  showTab('newBooking');
+  setTimeout(() => {
+    const next = new Date(dateKey + 'T00:00:00');
+    next.setDate(next.getDate() + 1);
+    document.getElementById('property').value      = prop;
+    document.getElementById('checkinDate').value   = dateKey;
+    document.getElementById('checkoutDate').value  = next.toISOString().slice(0, 10);
+    document.getElementById('checkinTime').value   = '14:00';
+    document.getElementById('checkoutTime').value  = '12:00';
+    updateCaretaker();
+  }, 0);
+}
+
+function closeCalPick() {
+  document.getElementById('calPickModal').classList.add('hidden');
+  document.getElementById('calPickOverlay').classList.add('hidden');
 }

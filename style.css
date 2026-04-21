@@ -804,3 +804,50 @@ button:focus { outline: none; }
 }
 .settings-panel { max-width: 480px; }
 .ct-form { max-width: 480px; }
+
+/* ── Calendar day pick modal ──────────────────────────────────────────────── */
+.cal-day { cursor: pointer; }
+.cal-day:hover .cal-day-num { color: var(--olive); font-weight: 700; }
+.cal-day.empty { cursor: default; }
+
+.cal-pick-modal {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--card-bg);
+  border-radius: 18px 18px 0 0;
+  padding: 22px 20px 32px;
+  z-index: 400;
+  box-shadow: 0 -4px 30px rgba(0,0,0,.18);
+  max-width: 480px;
+  margin: 0 auto;
+}
+@media (min-width: 480px) {
+  .cal-pick-modal {
+    bottom: auto; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 14px;
+    width: 340px;
+  }
+}
+.cal-pick-date {
+  font-size: 15px; font-weight: 600; color: var(--text);
+  margin-bottom: 14px; line-height: 1.5;
+}
+.cal-pick-label {
+  font-size: 12px; font-weight: 600; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px;
+}
+.cal-pick-props { display: flex; flex-direction: column; gap: 10px; }
+.cal-pick-btn {
+  padding: 13px 16px; background: var(--card-bg);
+  border: 2px solid; border-radius: var(--radius-sm);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  font-family: inherit; text-align: left; transition: opacity .15s;
+}
+.cal-pick-btn:hover { opacity: .75; }
+.cal-pick-cancel {
+  width: 100%; margin-top: 12px; padding: 11px;
+  background: var(--footer-bg); color: var(--text-light);
+  border: none; border-radius: var(--radius-sm);
+  font-size: 14px; cursor: pointer; font-family: inherit;
+}

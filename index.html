@@ -412,6 +412,19 @@
 
 <div id="navOverlay" onclick="toggleMobileNav()"></div>
 
+<!-- CALENDAR DATE PICK MODAL -->
+<div id="calPickOverlay" class="modal-overlay hidden" onclick="closeCalPick()"></div>
+<div id="calPickModal" class="cal-pick-modal hidden">
+  <div class="cal-pick-date" id="calPickDate"></div>
+  <p class="cal-pick-label">Book this date for:</p>
+  <div class="cal-pick-props">
+    <button onclick="calPickProperty('Avy Abode')"   class="cal-pick-btn" style="border-color:#7a9a6a;color:#7a9a6a">Avy Abode</button>
+    <button onclick="calPickProperty('Ira Abode')"   class="cal-pick-btn" style="border-color:#c8a84a;color:#c8a84a">Ira Abode</button>
+    <button onclick="calPickProperty('MangoGreens')" class="cal-pick-btn" style="border-color:#6a9a8a;color:#6a9a8a">MangoGreens</button>
+  </div>
+  <button onclick="closeCalPick()" class="cal-pick-cancel">Cancel</button>
+</div>
+
 <script src="db.js?v=30"></script>
 <script src="auth.js?v=30"></script>
 <script src="receipt.js?v=30"></script>
