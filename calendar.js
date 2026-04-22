@@ -9,6 +9,14 @@ const PROP_COLORS = {
 
 let calYear  = new Date().getFullYear();
 let calMonth = new Date().getMonth();
+let calFilterProp = ''; // '' = all properties
+
+function setCalFilter(btn, prop) {
+  calFilterProp = prop;
+  document.querySelectorAll('.cal-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCalendar();
+}
 
 function renderCalendar() {
   const grid = document.getElementById('calendarGrid');
@@ -16,6 +24,14 @@ function renderCalendar() {
 
   const bookings      = DB.getBookings();
   const airbnbEvents  = DB.getAirbnbEvents();
+
+  // Filter by selected property
+  const filteredBookings = calFilterProp
+    ? bookings.filter(b => b.property === calFilterProp)
+    : bookings;
+  const filteredAirbnb = calFilterProp
+    ? airbnbEvents.filter(e => e.property === calFilterProp)
+    : airbnbEvents;
 
   // Build a map: "YYYY-MM-DD" -> [{label, color, source}]
   const dayMap = {};
@@ -31,13 +47,13 @@ function renderCalendar() {
     }
   }
 
-  bookings.forEach(b => {
+  filteredBookings.forEach(b => {
     markRange(b.checkinDate, b.checkoutDate,
       `${b.property}: ${b.guestName || 'Guest'}`,
       PROP_COLORS[b.property] || '#888', 'local');
   });
 
-  airbnbEvents.forEach(e => {
+  filteredAirbnb.forEach(e => {
     markRange(e.start, e.end, `${e.property} (Airbnb)`,
       '#ff5a5f', 'airbnb');
   });
@@ -57,12 +73,15 @@ function renderCalendar() {
     <button onclick="calNav(1)"  class="btn-secondary">Next →</button>
   </div>`;
 
-  // Legend
+  // Legend — show only filtered or all
   html += '<div class="cal-legend">';
-  PROPERTIES.forEach(p => {
+  const legendProps = calFilterProp ? [calFilterProp] : PROPERTIES;
+  legendProps.forEach(p => {
     html += `<span class="legend-dot" style="background:${PROP_COLORS[p]}"></span>${p} &nbsp;`;
   });
-  html += `<span class="legend-dot" style="background:#ff5a5f"></span>Airbnb`;
+  if (!calFilterProp) {
+    html += `<span class="legend-dot" style="background:#ff5a5f"></span>Airbnb`;
+  }
   html += '</div>';
 
   grid.innerHTML = html;

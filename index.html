@@ -188,6 +188,12 @@
   <!-- CALENDAR -->
   <div id="tab-calendar" class="tab-content hidden">
     <h3 class="page-title">Calendar</h3>
+    <div class="cal-filter-row">
+      <button class="cal-filter-btn active" data-prop="" onclick="setCalFilter(this,'')">All</button>
+      <button class="cal-filter-btn" data-prop="Avy Abode" onclick="setCalFilter(this,'Avy Abode')">Avy Abode</button>
+      <button class="cal-filter-btn" data-prop="Ira Abode" onclick="setCalFilter(this,'Ira Abode')">Ira Abode</button>
+      <button class="cal-filter-btn" data-prop="MangoGreens" onclick="setCalFilter(this,'MangoGreens')">MangoGreens</button>
+    </div>
     <div class="calendar-grid" id="calendarGrid"></div>
     <div class="ical-section" id="icalSection" data-admin>
       <button class="ical-toggle" onclick="toggleIcal()">

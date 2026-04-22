@@ -875,3 +875,21 @@ button:focus { outline: none; }
   border-radius: 0;
 }
 .cal-sel-range .cal-day-num { color: var(--olive-dark); }
+
+/* ── Calendar property filter ─────────────────────────────────────────────── */
+.cal-filter-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.cal-filter-btn {
+  padding: 7px 14px; border-radius: 20px;
+  border: 1.5px solid var(--card-border);
+  background: var(--card-bg); color: var(--text-mid);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+.cal-filter-btn:hover { border-color: var(--olive-btn); color: var(--olive-btn); }
+.cal-filter-btn.active {
+  background: var(--header-bg); color: var(--white);
+  border-color: var(--header-bg);
+}
