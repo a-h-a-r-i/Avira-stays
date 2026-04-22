@@ -58,19 +58,18 @@ function renderCalendar() {
       '#ff5a5f', 'airbnb');
   });
 
-  // Render 3-month view (prev, current, next)
+  // Render current + next 2 months (no past)
   let html = '<div class="cal-months">';
-  for (let mo = calMonth - 1; mo <= calMonth + 1; mo++) {
+  for (let mo = calMonth; mo <= calMonth + 2; mo++) {
     let y = calYear, m = mo;
-    if (m < 0)  { m += 12; y--; }
     if (m > 11) { m -= 12; y++; }
     html += renderMonth(y, m, dayMap);
   }
   html += '</div>';
   html += `<div class="cal-nav">
-    <button onclick="calNav(-1)" class="btn-secondary">← Prev</button>
+    <button onclick="calNav(-1)" class="btn-secondary" id="calPrevBtn">&#8592; Prev</button>
     <button onclick="calNav(0)"  class="btn-secondary">Today</button>
-    <button onclick="calNav(1)"  class="btn-secondary">Next →</button>
+    <button onclick="calNav(1)"  class="btn-secondary">Next &#8594;</button>
   </div>`;
 
   // Legend — show only filtered or all
@@ -129,9 +128,13 @@ function renderMonth(year, month, dayMap) {
 }
 
 function calNav(dir) {
+  const now = new Date();
+  const realYear  = now.getFullYear();
+  const realMonth = now.getMonth();
+
   if (dir === 0) {
-    calYear  = new Date().getFullYear();
-    calMonth = new Date().getMonth();
+    calYear  = realYear;
+    calMonth = realMonth;
   } else {
     calMonth += dir;
     if (calMonth < 0)  { calMonth = 11; calYear--; }
